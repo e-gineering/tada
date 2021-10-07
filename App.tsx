@@ -1,12 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   return (
     <View style={styles.container}>
       <Text>Tada!</Text>
-      <StatusBar style="auto" />
+      <StatusBar backgroundColor="#448aff" barStyle="light-content" />
     </View>
   );
 }
