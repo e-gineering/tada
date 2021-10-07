@@ -7,11 +7,11 @@ You can schedule a time to send those messages out, so once a day a service runs
 ### Dev Environment Setup
 You'll need the following tools installed to develop and run this application:
 
-Mac
+#### Mac
 * XCode
 * XCode Command Line Tools
 
-All Platforms
+#### All Platforms
 * Android Studio - to run an Android simulator
   * Virtual Device 
 * node & npm
@@ -20,5 +20,6 @@ All Platforms
 
 ### Running
 1. Clone repo
-2. On iOS Simulator: `npm run ios`
-3. On Android Simulator: `npm run android`
+2. Install dependencies: `npm install`
+3. On iOS Simulator: `npm run ios`
+4. On Android Simulator: `npm run android`
