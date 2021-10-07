@@ -1,7 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
+import * as Contacts from 'expo-contacts';
+
 const ContactsList = (props: any) => {
+  const [contacts, setContacts] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function loadContacts() {
+      const { status } = await Contacts.requestPermissionsAsync();
+
+      if (status === 'granted') {
+        const { data } = await Contacts.getContactsAsync({
+          fields: [Contacts.Fields.Birthday],
+        });
+
+        const today = new Date();
+        const results: any[] = [];
+
+        data.map((contact: any) => {
+          if (contact.birthday
+            && contact.birthday.month === today.getMonth()
+            && contact.birthday.day === today.getDate()) {
+              results.push(contact);
+            }
+        });
+
+        setContacts(results);
+      }
+    }
+
+    loadContacts();
+  }, []);
+
   const renderItem = (item: any) => {
     return (
       <View style={styles.listItem}>
@@ -14,8 +45,8 @@ const ContactsList = (props: any) => {
     <View>
       <SafeAreaView>
         <FlatList
-          data={props.results}
-          keyExtractor={item => item.id}
+          data={contacts}
+          keyExtractor={item => item.lookupKey}
           renderItem={({item}) => renderItem(item)}
           ListEmptyComponent={() => (
             <View style={styles.noResults}>
