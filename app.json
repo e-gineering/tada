@@ -20,6 +20,8 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.egineering.tada",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
