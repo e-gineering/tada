@@ -1,16 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 
-import * as Contacts from 'expo-contacts';
+import * as Contacts from "expo-contacts";
+import { ContactView } from "./contact-view";
+import { Contact } from "expo-contacts";
 
-const ContactsList = (props: any) => {
+type ContactsListProps = {
+  onSendBirthdayMessage: (contact: Contact, message: string) => void;
+};
+
+const ContactsList = ({ onSendBirthdayMessage }: ContactsListProps) => {
   const [contacts, setContacts] = useState<any[]>([]);
 
   useEffect(() => {
     async function loadContacts() {
       const { status } = await Contacts.requestPermissionsAsync();
 
-      if (status === 'granted') {
+      if (status === "granted") {
         const { data } = await Contacts.getContactsAsync({
           fields: [Contacts.Fields.Birthday],
         });
@@ -19,11 +25,13 @@ const ContactsList = (props: any) => {
         const results: any[] = [];
 
         data.map((contact: any) => {
-          if (contact.birthday
-            && contact.birthday.month === today.getMonth()
-            && contact.birthday.day === today.getDate()) {
-              results.push(contact);
-            }
+          if (
+            contact.birthday &&
+            contact.birthday.month === today.getMonth() &&
+            contact.birthday.day === today.getDate()
+          ) {
+            results.push(contact);
+          }
         });
 
         setContacts(results);
@@ -33,11 +41,12 @@ const ContactsList = (props: any) => {
     loadContacts();
   }, []);
 
-  const renderItem = (item: any) => {
+  const renderItem = (item: Contact) => {
     return (
-      <View style={styles.listItem}>
-        <Text>{item.name}</Text>
-      </View>
+      <ContactView
+        contact={item}
+        onSendContactBirthdayMessage={onSendBirthdayMessage}
+      />
     );
   };
 
@@ -46,8 +55,8 @@ const ContactsList = (props: any) => {
       <SafeAreaView>
         <FlatList
           data={contacts}
-          keyExtractor={item => item.lookupKey}
-          renderItem={({item}) => renderItem(item)}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => renderItem(item)}
           ListEmptyComponent={() => (
             <View style={styles.noResults}>
               <Text>No birthdays today!</Text>
@@ -56,19 +65,16 @@ const ContactsList = (props: any) => {
         />
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  listItem: {
-    padding: 16,
-  },
   noResults: {
     flex: 1,
-    textAlign: 'center',
-    alignItems: 'center',
+    textAlign: "center",
+    alignItems: "center",
     marginTop: 20,
-  }
+  },
 });
 
 export default ContactsList;

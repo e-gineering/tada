@@ -1,12 +1,14 @@
-import React from 'react';
-import { StatusBar, Text, View } from 'react-native';
-import ContactsList from './components/contacts-list';
+import React from "react";
+import { SafeAreaView, StatusBar, View } from "react-native";
+import { Birthdays } from "./screens/birthdays";
 
 export default function App() {
   return (
-    <View>
-      <ContactsList />
-      <StatusBar backgroundColor="#448aff" barStyle="light-content" />
-    </View>
+    <SafeAreaView>
+      <View>
+        <Birthdays />
+        <StatusBar backgroundColor="#448aff" barStyle="light-content" />
+      </View>
+    </SafeAreaView>
   );
 }
